@@ -1,0 +1,13 @@
+---
+# Prepare locale
+- name: Check locale existing
+  shell: "localectl list-locales | egrep {{ locale_str }}"
+  register: locale_filter_res
+  
+- name: Debug locale check
+  debug: msg="locale_filter_res.stdout"
+
+- name: Set Locale
+  shell: "localectl set-locale LANG={{ locale_str }}" 
+  when: locale_filter_res.stdout | length > 0
+

@@ -1,0 +1,22 @@
+---
+# Basic tasks for package env preparation
+#
+- name: Update and upgrade yum
+  yum: 
+    update_cache: yes
+    name: '*'
+    state: latest
+    exclude: kernel*
+
+- name: Install EPEL repo.
+  yum: name=epel-release state=present
+
+- name: Install default packages
+  yum: name={{ item }} state=present
+  loop: "{{ general_pkg_list }}"
+
+- name: Install OS-specific packages.
+  yum: name={{ item }} state=present
+  loop: "{{ pkg_list }}"
+
+

@@ -1,0 +1,6 @@
+---
+# Basic vars for Cent OS 007
+
+pkg_list: ["zlib-devel", "bzip2", "bzip2-devel", "openssl-devel", "libffi-devel",
+"ncurses-devel", "kernel-devel", "python-devel", "yum-utils", "ncurses", "ncurses-devel", "ncurses-libs", "ncurses-base", "python-libs"]
+

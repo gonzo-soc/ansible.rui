@@ -1,0 +1,41 @@
+# domain - labs001.local
+[pxe-srv]
+172.17.0.132
+
+[fw]
+172.17.0.134 # firewall 
+
+[ns]
+172.17.0.135 # ns001 - master
+172.17.0.136 # ns002 - slave
+
+[dhcp]
+172.17.0.137 # dhcp
+
+[test-centos7]
+172.17.0.143
+
+[basic:children]
+fw
+ns
+dhcp
+test-centos7
+
+[CentOS:children]
+fw
+ns
+dhcp
+test-centos7
+
+[soho001:children]
+fw
+ns
+dhcp
+test-centos7
+
+[soho001:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[local]
+localhost ansible_connection=local

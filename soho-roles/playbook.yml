@@ -1,0 +1,4 @@
+---
+- hosts: test-centos7
+  roles:
+    - { role: 'basic', tags: 'basic' }

@@ -1,0 +1,10 @@
+---
+- block:
+  - include: centos007/setup_def_pkgs.yml
+  - include: centos007/setup_locale.yml
+  when:
+    - ansible_facts['distribution'] == "CentOS"
+    - ansible_facts['distribution_major_version'] == "7"
+
+- include: basic.yml
+
