@@ -1,37 +1,50 @@
 # domain - labs001.local
-[pxe-srv]
+[pxe-srv.lab001.local]
 172.17.0.132
 
-[fw]
+[fw.lab001.local]
 172.17.0.134 # firewall 
 
-[ns]
+[ns001.lab001.local]
 172.17.0.135 # ns001 - master
+
+[ns002.lab001.local]
 172.17.0.136 # ns002 - slave
 
-[dhcp]
+[dhcp001.lab001.local]
 172.17.0.137 # dhcp
 
-[test-centos7]
+[test-centos7.lab001.local]
 172.17.0.143
 
+[test-debian9.lab001.local]
+172.17.0.144
+
 [basic:children]
-fw
-ns
-dhcp
-test-centos7
+fw.lab001.local
+ns001.lab001.local
+ns002.lab001.local
+dhcp001.lab001.local
+test-centos7.lab001.local
+test-debian9.lab001.local
 
 [CentOS:children]
-fw
-ns
-dhcp
-test-centos7
+ns001.lab001.local
+ns002.lab001.local
+dhcp001.lab001.local
+test-centos7.lab001.local
+
+[Debian:children]
+test-debian9.lab001.local
+fw.lab001.local
 
 [soho001:children]
-fw
-ns
-dhcp
-test-centos7
+fw.lab001.local
+ns001.lab001.local
+ns002.lab001.local
+dhcp001.lab001.local
+test-centos7.lab001.local
+test-debian9.lab001.local
 
 [soho001:vars]
 ansible_ssh_user=vagrant

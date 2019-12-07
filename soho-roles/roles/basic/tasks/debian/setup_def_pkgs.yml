@@ -1,0 +1,19 @@
+---
+# Basic tasks for package env preparation
+#
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 3600 #One hour
+
+- name: Install default packages
+  apt: name={{ item }} state=present
+  loop: "{{ general_pkg_list }}"
+
+- name: Install OS-specific packages.
+  apt: name={{ item }} state=present
+  loop: "{{ pkg_list }}"
+
+

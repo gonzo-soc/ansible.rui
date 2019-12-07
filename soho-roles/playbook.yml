@@ -1,4 +1,8 @@
 ---
-- hosts: test-centos7
+- hosts: test-debian9.lab001.local
   roles:
     - { role: 'basic', tags: 'basic' }
+
+- hosts: fw.lab001.local
+  roles:
+    - { role: 'fw', tags: 'fw' }

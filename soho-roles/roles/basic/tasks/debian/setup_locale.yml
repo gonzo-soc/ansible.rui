@@ -1,0 +1,16 @@
+---
+# Prepare locale
+
+- name: Setup locale
+  replace:
+    path: '/etc/locale.gen'
+    regexp: '^#(\s+{{ locale_str }}.*)$'
+    replace: '\1'
+
+- name: Generate new locale
+  shell: "locale-gen"
+  register: locale_filter_res
+  failed_when: locale_filter_res.rc > 0
+  
+- name: Debug locale generation
+  debug: msg="locale_filter_res.stdout"

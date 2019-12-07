@@ -1,10 +1,19 @@
 ---
-- block:
+- name: Include CentOS
+  block:
   - include: centos007/setup_def_pkgs.yml
   - include: centos007/setup_locale.yml
   when:
     - ansible_facts['distribution'] == "CentOS"
     - ansible_facts['distribution_major_version'] == "7"
+
+- name: Include Debian
+  block:
+  - include: debian/setup_def_pkgs.yml
+  - include: debian/setup_locale.yml
+  when:
+    - ansible_facts['distribution'] == "Debian"
+    - ansible_facts['distribution_major_version'] == "9"
 
 - include: basic.yml
 

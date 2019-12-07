@@ -1,9 +1,8 @@
 ---
 admin_user: "gonzo"
 # group %wheel is already included in the sudo: see visudo
-admin_groups: ['wheel']
+admin_groups: ['develop', 'sudo']
 admin_password: "$6$A7TcNednfS1pBmFl$M1IzGyQv8QmaY0I7Ik7mW/lqrAa5xCprruotGgBfGQ89wvfE8mIcdyIM3Y2tEazYU37gO6BXupJGp4YONJSyM0"
-locale_str: "ru_RU.utf8"
 
 githubuser: "gonzo-soc"
 rollUpIt_lnx_dst: "/usr/local/src/post-scripts"

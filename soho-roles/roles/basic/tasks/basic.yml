@@ -1,4 +1,9 @@
 ---
+- name: Ensure group "develop" exists
+  group:
+    name: develop
+    state: present
+
 # Basic srv preparation
 - name: Create admin user
   user:
@@ -14,13 +19,13 @@
   become: false
   local_action: shell cat $HOME/.ssh/id_rsa.pub | ssh "{{ vagrant_user }}"@"{{ ansible_eth1['ipv4']['address'] }}" 'sudo -u {{ admin_user }} mkdir -m 700 -p /home/"{{ admin_user }}"/.ssh; sudo -u {{ admin_user}} tee -a /home/"{{ admin_user }}"/.ssh/authorized_keys; sudo chmod 600 /home/"{{ admin_user }}"/.ssh/authorized_keys'
 
-- name: Add sudoers admin group file
-  template:
-    src: sudo_admgr_add.j2
-    dest: /etc/sudoers.d/local_admgr_add
-    owner: root
-    group: root
-    mode: 440
+  #- name: Add sudoers admin group file
+  #  template:
+  #    src: sudo_admgr_add.j2
+  #    dest: /etc/sudoers.d/local_admgr_add
+  #    owner: root
+  #    group: root
+  #    mode: 440
 
 - name: Setup sudoers and sshd_config 
   replace:
@@ -28,11 +33,11 @@
     regexp: '{{ item.regexp }}'
     replace: '{{ item.replace }}'
   with_items:
-    - {
-      path: "/etc/sudoers",
-      regexp: '^#[^\S\n\t]*(#includedir)[^\S\n\t]*(/etc/sudoers\.d)\s*$',
-      replace: '\1 \2'
-    }
+    #    - {
+    #      path: "/etc/sudoers",
+    #      regexp: '^#[^\S\n\t]*(#includedir)[^\S\n\t]*(/etc/sudoers\.d)\s*$',
+    #      replace: '\1 \2'
+    #    }
     - {
       path: "/etc/ssh/sshd_config",
       regexp: '#(PermitRootLogin).*$',
@@ -62,11 +67,12 @@
     state: directory
     owner: root
     group: develop
-    mode: '0755'
+    mode: '0775'
 
 - name: Copy from FTP
   shell: 'wget -r -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx;
-          find /usr/local/src/post-scripts/rollUpIt.lnx -iname "*.sh" -exec chmod 755 {} \;'
+          chown -Rf root:develop {{ rollUpIt_lnx_dst }}/rollUpIt.lnx;
+          find {{ rollUpIt_lnx_dst }}/rollUpIt.lnx -iname "*.sh" -exec chmod 755 {} \;'
   args:
     chdir: "{{ rollUpIt_lnx_dst }}"
     #- name: Copy rollUpIt.lnx
