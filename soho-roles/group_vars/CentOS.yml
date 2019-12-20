@@ -1,8 +1,12 @@
 ---
 # Basic vars for Cent OS 007
 
-pkg_list: ["zlib-devel", "bzip2", "bzip2-devel", "openssl-devel", "libffi-devel",
-"ncurses-devel", "kernel-devel", "python-devel", "yum-utils", "ncurses", "ncurses-devel", 
-"ncurses-libs", "ncurses-base", "python-libs"]
-
+pkg_list: [ "zlib-devel", "bzip2", "bzip2-devel", "openssl-devel", "libffi-devel", "yum-cron",
+"yum-utils", "kernel-devel", "python-devel", "ncurses", "ncurses-devel",
+"ncurses-libs", "ncurses-base", "python-libs", "cmake3", "sqlite-devel",
+"readline-devel", "tk-devel", "gdbm-devel", "db4-devel",
+"libpcap-devel", "xz-devel", "libffi-devel" ]
+ 
 locale_str: "ru_RU.utf8"
+
+rsyslog_wd: "/var/lib/rsyslog""

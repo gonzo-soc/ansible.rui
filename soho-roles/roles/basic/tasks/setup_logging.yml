@@ -1,0 +1,47 @@
+---
+- name: Prepare journald directory
+  file:
+    path: "/etc/systemd/journald.conf.d/" 
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Make journald logs persistent
+  shell:
+    cmd: |
+      touch /etc/systemd/journald.conf.d/storage.conf;
+      cat >/etc/systemd/journald.conf.d/storage.conf << EOF
+      [Journal]
+      Storage=persistent
+      EOF
+  notify:
+    restart systemd-journald
+
+- name: Prepare to copy rsyslogd.conf 
+  shell:
+    cmd: |
+      if [ ! -e /etc/rsyslog.conf.orig ]; then
+        mv /etc/rsyslog.conf /etc/rsyslog.conf.orig
+      fi
+
+- name: Copy rsyslog.conf via templates
+  template:
+    src: rsyslog.conf.j2
+    dest: "/etc/rsyslog.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    restart rsyslog
+
+    #- name: Copy rsyslog.conf
+    #  copy:
+    #    src: "files/rollUpIt.lnx/resources/logging/rsyslog.conf"
+    #    dest: "/etc/rsyslog.conf"
+    #    owner: root
+    #    group: root
+    #    mode: '0644'
+    #  notify:
+    #    restart rsyslog
+

@@ -2,15 +2,19 @@
 # tasks file for fw
 
 - name: Install iptables
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} state=present
   with_items:
     - ipset
     - iptables-persistent
 
-- name: Setup-FW
+- name: Setup FW
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh \ 
---wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} \
+--wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} "" "" \
 --lan int={{ lan_i }} sn={{ lan_sn }} ip={{ lan_ip }}'
   register: basicSetupOutput_Reg
+  tags:
+    - setup-fw
 
-- debug: var=basicSetupOutput_Reg
+- name: Debug Setup FW 
+  debug: var=basicSetupOutput_Reg
+

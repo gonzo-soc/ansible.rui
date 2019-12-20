@@ -1,6 +1,16 @@
 ---
-# handlers file for basic.srvfarm001
+# handlers file for basic role
 - name: restart sshd
   systemd: 
     name: sshd 
     state: restarted
+
+- name: restart systemd-journald
+  systemd:
+    name: systemd-journald
+    state: restarted 
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted 

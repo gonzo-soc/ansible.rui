@@ -1,10 +1,12 @@
 ---
 # Basic vars for Debian
 
-pkg_list: [ "python3", "python3-pip", "python3-venv", "bc", "lsof", "psmisc",
-"build-essential", "zlib1g-dev", "libncurses5-dev", "libgdbm-dev",
-"libnss3-dev", "libssl-dev", "libreadline-dev", "libffi-dev", "tcpdump",
-"ntpdate", "python-dev", "ruby-dev", "libbz2-dev", "libsqlite3-dev", "dbus",
-"llvm", "libncursesw5-dev", "xz-utils", "tk-dev", "liblzma-dev", "python-openssl" ]
+pkg_list: [ "python-dev", "build-essential",
+"zlib1g-dev", "libncurses5-dev", "libgdbm-dev", "libnss3-dev", "openssl",
+"libssl-dev", "libreadline-dev", "libffi-dev", "ntpdate", "ruby-dev",
+"libbz2-dev", "libsqlite3-dev", "dbus", "llvm", "libncursesw5-dev",
+"xz-utils", "tk-dev", "liblzma-dev", "python-openssl" ]
 
 locale_str: "ru_RU.UTF-8 UTF-8"
+
+rsyslog_wd: "/var/spool/rsyslog"

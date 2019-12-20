@@ -1,7 +1,7 @@
 ---
 admin_user: "gonzo"
-# group %wheel is already included in the sudo: see visudo
-admin_groups: ['develop', 'sudo']
+# group %wheel is ancient 
+admin_groups: ['develop', 'sudo', 'adm']
 admin_password: "$6$A7TcNednfS1pBmFl$M1IzGyQv8QmaY0I7Ik7mW/lqrAa5xCprruotGgBfGQ89wvfE8mIcdyIM3Y2tEazYU37gO6BXupJGp4YONJSyM0"
 
 githubuser: "gonzo-soc"
@@ -11,5 +11,5 @@ ftp_user: "ftp_user"
 ftp_pwd: "SUPER"
 ftp_ip: "172.17.0.132"
 
-general_pkg_list: ["make", "ntp", "gcc", "git-core", "sudo", "git", "tcpdump", "wget", "lsof", "net-tools", "curl"]
+general_pkg_list: [ "python", "python-pip", "make", "ntp", "gcc", "git-core", "sudo", "git", "tcpdump", "wget", "lsof", "net-tools", "curl" ]
 vagrant_user: "vagrant"

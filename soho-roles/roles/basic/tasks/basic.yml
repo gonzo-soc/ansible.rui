@@ -1,8 +1,31 @@
 ---
-- name: Ensure group "develop" exists
+- name: Ensure group "develop,adm" exists
   group:
-    name: develop
+    name: "{{ item.name}}"
     state: present
+  with_items:
+    - {
+      name: "develop"
+    }
+    - {
+      name: "adm"
+    }
+
+    #- name: Get updated rollUpIt.git
+    #  local_action: 
+    #      module: git
+    #      repo: https://github.com/{{ githubuser | urlencode }}/rollUpIt.lnx.git
+    #      version: develop
+    #      dest: "files"
+    #  become: False
+    #  run_once: True
+- name: Update local RUI
+  local_action: shell rm -Rf files/rollUpIt.lnx; cd files; 
+                      wget -r -nv -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx;
+                      chown -Rf likhobabin_im:likhobabin_im ../rollUpIt.lnx;
+                      find . -iname "*.sh" -exec chmod 775 {} \;
+  become: False
+  run_once: True
 
 # Basic srv preparation
 - name: Create admin user
@@ -19,13 +42,14 @@
   become: false
   local_action: shell cat $HOME/.ssh/id_rsa.pub | ssh "{{ vagrant_user }}"@"{{ ansible_eth1['ipv4']['address'] }}" 'sudo -u {{ admin_user }} mkdir -m 700 -p /home/"{{ admin_user }}"/.ssh; sudo -u {{ admin_user}} tee -a /home/"{{ admin_user }}"/.ssh/authorized_keys; sudo chmod 600 /home/"{{ admin_user }}"/.ssh/authorized_keys'
 
-  #- name: Add sudoers admin group file
-  #  template:
-  #    src: sudo_admgr_add.j2
-  #    dest: /etc/sudoers.d/local_admgr_add
-  #    owner: root
-  #    group: root
-  #    mode: 440
+- name: Add sudoers admin group file
+  template:
+    src: sudo_admgr_add.j2
+    dest: /etc/sudoers.d/local_admgr_add
+    force: no
+    owner: root
+    group: root
+    mode: 440
 
 - name: Setup sudoers and sshd_config 
   replace:
@@ -33,11 +57,11 @@
     regexp: '{{ item.regexp }}'
     replace: '{{ item.replace }}'
   with_items:
-    #    - {
-    #      path: "/etc/sudoers",
-    #      regexp: '^#[^\S\n\t]*(#includedir)[^\S\n\t]*(/etc/sudoers\.d)\s*$',
-    #      replace: '\1 \2'
-    #    }
+    - {
+        path: "/etc/sudoers",
+        regexp: '^#[^\S\n\t]*(#includedir)[^\S\n\t]*(/etc/sudoers\.d)\s*$',
+        replace: '\1 \2'
+      }
     - {
       path: "/etc/ssh/sshd_config",
       regexp: '#(PermitRootLogin).*$',
@@ -55,11 +79,12 @@
     }
   notify: restart sshd
 
-  #- name: Get updated rollUpIt.git
-  #  git:
-  #    repo: https://github.com/{{ githubuser | urlencode }}/rollUpIt.lnx
-  #    version: develop
-  #    dest: "{{ rollUpIt_lnx_dst }}"
+- name: Setup logging
+  block:
+    - include: "setup_logging.yml"
+      #  rescue:
+      #    - debug:
+      #        msg: 'Error: Failed to setup logging'
   
 - name: Prepare script dir
   file:
@@ -69,25 +94,14 @@
     group: develop
     mode: '0775'
 
-- name: Copy from FTP
-  shell: 'wget -r -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx;
+- name: Update RUI
+  shell: 'rm -Rf rollUpIt.lnx 2>/dev/null;
+          wget -r -nv -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx;
           chown -Rf root:develop {{ rollUpIt_lnx_dst }}/rollUpIt.lnx;
-          find {{ rollUpIt_lnx_dst }}/rollUpIt.lnx -iname "*.sh" -exec chmod 755 {} \;'
+          find {{ rollUpIt_lnx_dst }}/rollUpIt.lnx -iname "*.sh" -exec chmod 775 {} \;'
   args:
     chdir: "{{ rollUpIt_lnx_dst }}"
-    #- name: Copy rollUpIt.lnx
-    #  copy:
-    #    src: "files/rollUpIt.lnx"
-    #    dest: "{{ rollUpIt_lnx_dst }}"
-    #    owner: root
-    #    group: develop
-    #    mode: 775
-
-- name: Get updated dotfiles (develop branch)
-  git:
-    repo: https://github.com/{{ githubuser | urlencode }}/dotfiles
-    version: develop
-    dest: /home/{{ admin_user }}/.dotfiles
+  tags: update-rui 
 
 - name: Basic setup
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/tests/base/test_ansibleBasicSetup.sh {{ admin_user }}'
