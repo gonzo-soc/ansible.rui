@@ -1,9 +1,0 @@
-/**/.git
-/**/*.log
-/**/*.tmp
-/**/.ssh
-/**/backup
-/**/cache
-/**/.cache
-/**/*.swp
-/**/.pki
