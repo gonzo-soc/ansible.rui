@@ -34,14 +34,3 @@
     mode: '0644'
   notify:
     restart rsyslog
-
-    #- name: Copy rsyslog.conf
-    #  copy:
-    #    src: "files/rollUpIt.lnx/resources/logging/rsyslog.conf"
-    #    dest: "/etc/rsyslog.conf"
-    #    owner: root
-    #    group: root
-    #    mode: '0644'
-    #  notify:
-    #    restart rsyslog
-

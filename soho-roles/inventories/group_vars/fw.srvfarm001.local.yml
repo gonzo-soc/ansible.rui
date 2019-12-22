@@ -6,4 +6,4 @@ wan_ip: nd
 
 lan_i: eth1
 lan_sn: 172.17.0.128/25
-lan_ip: 172.17.0.133
+lan_ip: 172.17.0.134

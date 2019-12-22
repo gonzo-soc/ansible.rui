@@ -39,7 +39,7 @@ module(
 
 #### GLOBAL DIRECTIVES ####
 global(
-  workDirectory = {{ rsyslog_wd }}
+  workDirectory = "{{ rsyslog_wd }}"
   maxMessageSize = "8192" 
 )
 
@@ -54,7 +54,7 @@ $Umask 0022
 
 # about templates: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-templates
 # about properties: https://www.rsyslog.com/doc/v8-stable/configuration/properties.html
-$template RSYSLOG_Verbose, "%syslogtag% %syslogfacility% [%syslogfacility-text%] %syslogfacility% [%syslogseverity-text%] %HOSTNAME% [%timegenerated% %timestamp%] %msg%\n"
+$template RSYSLOG_Verbose, "%syslogtag% [%syslogfacility-text%] %syslogfacility% [%syslogseverity-text%] %HOSTNAME% [%timegenerated% %timestamp%] %msg%\n"
 
 module(
   load="builtin:omfile"
@@ -110,14 +110,19 @@ if $programname == 'dhcpd' then {
     file="/var/log/dhcpd"
   )
 } else if $programname == 'vsftpd' then {
-    action(
+  action(
     type="omfile"
     file="/var/log/vsftpd"
   )
 } else if $programname == 'xinetd' then {
-    action(
+  action(
     type="omfile"
     file="/var/log/xinetd"
+  )
+} else if $syslogfacility-text == 'kern' and $msg contains 'iptables' then {
+  action(
+    type="omfile"
+    file="/var/log/iptables"
   )
 } else {
 
