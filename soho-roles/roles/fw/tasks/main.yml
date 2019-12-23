@@ -7,10 +7,28 @@
     - ipset
     - iptables-persistent
 
+- name: Prepare LAN001 ipset
+  shell: 
+    cmd: |
+      local -r LAN001_TRUSTED_IPSET="LAN001_TRUSTED_IPSET"
+      if [ -z "$(ipset list -n | grep "LAN001_TRUSTED_IPSET")" ]; then
+        ipset -N "${LAN001_TRUSTED_IPSET}" iphash
+        for h "{{ lan001_trusted | join(' ') }}"; do
+          echo "debug [Prepare LAN001 ipset] host: ${h}"
+          ipset -A "${LAN001_TRUSTED_IPSET}" "$h"
+        done
+      else
+        printf "debug [Prepare LAN001 ipset] ipset [${LAN001_TRUSTED_IPSET}] has already been defined. Please, check [ ipset list -n ]\n"
+      fi
+  delegate_to: 127.0.0.1
+  become: False
+  tags:
+    - lan001-trusted
+
 - name: Setup FW
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh \ 
 --wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} "" "" \
---lan int={{ lan_i }} sn={{ lan_sn }} ip={{ lan_ip }}'
+--lan int={{ lan_i }} sn={{ lan_sn }} ip={{ lan_ip }} '
   register: basicSetupOutput_Reg
   tags:
     - setup-fw
