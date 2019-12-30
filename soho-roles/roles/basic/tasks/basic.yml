@@ -82,10 +82,7 @@
 - name: Setup logging
   block:
     - include: "setup_logging.yml"
-      #  rescue:
-      #    - debug:
-      #        msg: 'Error: Failed to setup logging'
-  
+      
 - name: Prepare script dir
   file:
     path: "{{ rollUpIt_lnx_dst }}"
@@ -103,8 +100,15 @@
     chdir: "{{ rollUpIt_lnx_dst }}"
   tags: update-rui 
 
-- name: Basic setup
+- name: Basic admin user setup
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/tests/base/test_ansibleBasicSetup.sh {{ admin_user }}'
-  register: basicSetupOutput_Reg
+  register: basicAdmSetupOutput_Reg
 
-- debug: var=basicSetupOutput_Reg
+- debug: var=basicAdmSetupOutput_Reg
+
+- name: Basic root setup
+  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/tests/base/test_ansibleBasicSetup.sh root'
+  register: basicRootSetupOutput_Reg
+  tags: basic-root-setup
+
+- debug: var=basicRootSetupOutput_Reg

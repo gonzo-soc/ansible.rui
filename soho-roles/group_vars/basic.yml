@@ -1,5 +1,6 @@
 ---
 admin_user: "gonzo"
+
 # group %wheel is ancient 
 admin_groups: ['develop', 'sudo', 'adm']
 admin_password: "$6$A7TcNednfS1pBmFl$M1IzGyQv8QmaY0I7Ik7mW/lqrAa5xCprruotGgBfGQ89wvfE8mIcdyIM3Y2tEazYU37gO6BXupJGp4YONJSyM0"

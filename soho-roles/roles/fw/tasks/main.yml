@@ -7,28 +7,31 @@
     - ipset
     - iptables-persistent
 
-- name: Prepare LAN001 ipset
-  shell: 
-    cmd: |
-      local -r LAN001_TRUSTED_IPSET="LAN001_TRUSTED_IPSET"
-      if [ -z "$(ipset list -n | grep "LAN001_TRUSTED_IPSET")" ]; then
-        ipset -N "${LAN001_TRUSTED_IPSET}" iphash
-        for h "{{ lan001_trusted | join(' ') }}"; do
-          echo "debug [Prepare LAN001 ipset] host: ${h}"
-          ipset -A "${LAN001_TRUSTED_IPSET}" "$h"
-        done
-      else
-        printf "debug [Prepare LAN001 ipset] ipset [${LAN001_TRUSTED_IPSET}] has already been defined. Please, check [ ipset list -n ]\n"
-      fi
-  delegate_to: 127.0.0.1
-  become: False
+- name: Prepare fw
+  shell:
+    cmd: | 
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --reset;
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lm;
+  args:
+    executable: /bin/bash
   tags:
-    - lan001-trusted
+    - prepare-fw
 
-- name: Setup FW
+- name: Setup fw ipsets
+  block:
+    - include: "setup_ipset.yml"
+ 
+- name: Setup FW (basic setup, add LAN-001)
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh \ 
---wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} "" "" \
---lan int={{ lan_i }} sn={{ lan_sn }} ip={{ lan_ip }} '
+--wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} \
+trusted="{{ WAN001_TRUSTED_IN_FW_IPSET }}" \
+wan_in_tcp_ports="{{ WAN001_IN_FW_TCP_PORTSET }}" \
+wan_in_udp_ports="{{ WAN001_IN_FW_UDP_PORTSET }}" \
+--lan int={{ lan001_i }} sn={{ lan001_sn }} ip={{ lan001_ip }} \
+out_tcp_fwr_ports={{ LAN001_OUT_FWR_TCP_PORTSET }} out_udp_fwr_ports={{ LAN001_OUT_FWR_UDP_PORTSET }} \
+trusted="{{ LAN001_TRUSTED_IN_FW_IPSET }}" \
+in_tcp_fw_ports="{{ LAN001_IN_FW_TCP_PORTSET }}"
+in_udp_fw_ports="{{ LAN001_IN_FW_UDP_PORTSET }}"'
   register: basicSetupOutput_Reg
   tags:
     - setup-fw
@@ -36,3 +39,12 @@
 - name: Debug Setup FW 
   debug: var=basicSetupOutput_Reg
 
+- name: Add LAN002
+  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lan int={{ lan002_i }} sn={{ lan002_sn }} \
+ip={{ lan002_ip }} \
+out_tcp_fwr_ports={{ LAN002_OUT_FWR_TCP_PORTSET }} out_udp_fwr_ports={{ LAN002_OUT_FWR_UDP_PORTSET }} \
+trusted="{{ LAN002_TRUSTED_IN_FW_IPSET }}" \
+in_tcp_fw_ports="{{ LAN002_IN_FW_TCP_PORTSET }}"
+in_udp_fw_ports="{{ LAN002_IN_FW_UDP_PORTSET }}"'
+  tags:
+    - add-lan002

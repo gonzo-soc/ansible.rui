@@ -1,0 +1,95 @@
+---
+
+- name: Prepare trusted ip list 
+  shell: 
+    cmd: |
+      if [ "{{ item.ipset_name }}" = "nd" ]; then
+        echo "debug [Ans::Prepare trusted ip list] ip list is not defined"
+      elif [ -z "$(ipset list -n | grep "{{ item.ipset_name }}")" ]; then
+         ipset create {{ item.ipset_create_options }}
+         # 
+         # from https://stackoverflow.com/questions/10586153/split-string-into-an-array-in-bash
+         # to trim the trailing LF we must unset the last entry: unset 'ip_list[-1]'
+         # Turn attention to that here we add a delimeter at the line end
+         #
+         readarray -td' ' ip_list <<<"{{ item.str_ip_list }} "; unset 'ip_list[-1]'; declare -p ip_list
+         for h in "${ip_list[@]}"; do
+           echo "debug [Ansible::Prepare trusted ip list] host: ${h}"
+           ipset add "{{ item.ipset_name }}" "$h"
+         done
+       else
+         printf "debug [Prepare LAN001 ipset] ipset [{{ item.ipset_name }}] has already been defined. Please, check [ ipset list -n ]\n"
+       fi
+  loop:
+    - {
+      ipset_name: "{{ WAN001_TRUSTED_IN_FW_IPSET }}",
+      ipset_create_options: "{{ WAN001_TRUSTED_IN_FW_IPSET }} hash:ip netmask 24",
+      str_ip_list: "{{ wan001_trusted|join(' ') }}",
+    }
+    - {
+      ipset_name: "{{ LAN001_TRUSTED_IN_FW_IPSET }}",
+      ipset_create_options: "{{ LAN001_TRUSTED_IN_FW_IPSET }} hash:ip",
+      str_ip_list: "{{ lan001_trusted|default([])|join(' ') }}",
+    }
+    - {
+      ipset_name: "{{ LAN002_TRUSTED_IN_FW_IPSET }}",
+      ipset_create_options: "{{ LAN002_TRUSTED_IN_FW_IPSET }} hash:ip",
+      str_ip_list: "{{ lan002_trusted|default([])|join(' ') }}",
+    }
+  args:
+    executable: /bin/bash
+  tags:
+    - loop-trusted-ips
+
+- name: Prepare trusted port list 
+  shell: 
+    cmd: |
+      if [ "{{ item.port_list_name }}" = "nd" ]; then
+        echo "debug [Ans::Prepare trusted port list] port list is not defined"
+      elif [ -z "$(ipset list -n | grep "{{ item.port_list_name }}")" ]; then
+        ipset create {{ item.ipset_create_options }}
+        readarray -td' ' port_list <<<"{{ item.str_port_list }} "; unset 'port_list[-1]'; declare -p port_list
+        for p in "${port_list[@]}"; do
+          echo "debug [Ans::Prepare trusted port list] port: ${p}"
+          ipset add "{{ item.port_list_name }}" "$p"
+        done
+      else
+        echo "debug [Ans::Prepare trusted port list] ipset [{{ item.port_list_name }}] has already been defined. Please, check [ ipset list -n ]"
+      fi
+  loop:
+    - {
+      port_list_name: "{{ WAN001_IN_FW_TCP_PORTSET }}",
+      ipset_create_options: "{{ WAN001_IN_FW_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ wan001_in_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+       port_list_name: "{{ WAN001_IN_FW_UDP_PORTSET }}",
+       ipset_create_options: "{{ WAN001_IN_FW_UDP_PORTSET }} bitmap:port range 0-1024",
+       str_port_list: "{{ wan001_in_udp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN001_OUT_FWR_TCP_PORTSET }}",
+      ipset_create_options: "{{ LAN001_OUT_FWR_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan001_out_fwr_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN001_OUT_FWR_UDP_PORTSET }}",
+      ipset_create_options: "{{ LAN001_OUT_FWR_UDP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan001_out_fwr_udp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN001_IN_FW_TCP_PORTSET }}",
+      ipset_create_options: "{{ LAN001_IN_FW_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan001_in_fw_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN001_IN_FW_UDP_PORTSET }}",
+      ipset_create_options: "{{ LAN001_IN_FW_UDP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan001_in_fw_udp_ports|default([])|join(' ') }}"
+    }
+  args:
+    executable: /bin/bash
+  tags:
+    - loop-trusted-ports
+
+
