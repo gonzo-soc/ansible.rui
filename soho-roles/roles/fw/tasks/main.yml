@@ -10,6 +10,7 @@
 - name: Prepare fw
   shell:
     cmd: | 
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/apply_iptables_patch.sh;
       {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --reset;
       {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lm;
   args:
@@ -43,6 +44,7 @@ in_udp_fw_ports="{{ LAN001_IN_FW_UDP_PORTSET }}"'
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lan int={{ lan002_i }} sn={{ lan002_sn }} \
 ip={{ lan002_ip }} \
 out_tcp_fwr_ports={{ LAN002_OUT_FWR_TCP_PORTSET }} out_udp_fwr_ports={{ LAN002_OUT_FWR_UDP_PORTSET }} \
+wan_int={{ wan_i }} \
 trusted="{{ LAN002_TRUSTED_IN_FW_IPSET }}" \
 in_tcp_fw_ports="{{ LAN002_IN_FW_TCP_PORTSET }}"
 in_udp_fw_ports="{{ LAN002_IN_FW_UDP_PORTSET }}"'

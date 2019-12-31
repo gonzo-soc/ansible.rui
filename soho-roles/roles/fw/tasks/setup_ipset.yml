@@ -87,9 +87,27 @@
       ipset_create_options: "{{ LAN001_IN_FW_UDP_PORTSET }} bitmap:port range 0-1024",
       str_port_list: "{{ lan001_in_fw_udp_ports|default([])|join(' ') }}"
     }
+    - {
+      port_list_name: "{{ LAN002_OUT_FWR_TCP_PORTSET }}",
+      ipset_create_options: "{{ LAN002_OUT_FWR_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan002_out_fwr_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN002_OUT_FWR_UDP_PORTSET }}",
+      ipset_create_options: "{{ LAN002_OUT_FWR_UDP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan002_out_fwr_udp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN002_IN_FW_TCP_PORTSET }}",
+      ipset_create_options: "{{ LAN002_IN_FW_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan002_in_fw_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+      port_list_name: "{{ LAN002_IN_FW_UDP_PORTSET }}",
+      ipset_create_options: "{{ LAN002_IN_FW_UDP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ lan002_in_fw_udp_ports|default([])|join(' ') }}"
+    }
   args:
     executable: /bin/bash
   tags:
     - loop-trusted-ports
-
-
