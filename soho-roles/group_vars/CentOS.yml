@@ -9,4 +9,4 @@ pkg_list: [ "zlib-devel", "bzip2", "bzip2-devel", "openssl-devel", "libffi-devel
  
 locale_str: "ru_RU.utf8"
 
-rsyslog_wd: "/var/lib/rsyslog""
+rsyslog_wd: "/var/lib/rsyslog"

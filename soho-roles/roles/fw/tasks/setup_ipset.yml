@@ -68,6 +68,16 @@
        str_port_list: "{{ wan001_in_udp_ports|default([])|join(' ') }}"
     }
     - {
+      port_list_name: "{{ WAN001_OUT_TCP_PORTSET }}",
+      ipset_create_options: "{{ WAN001_OUT_TCP_PORTSET }} bitmap:port range 0-1024",
+      str_port_list: "{{ wan001_out_tcp_ports|default([])|join(' ') }}"
+    }
+    - {
+       port_list_name: "{{ WAN001_OUT_UDP_PORTSET }}",
+       ipset_create_options: "{{ WAN001_OUT_UDP_PORTSET }} bitmap:port range 0-1024",
+       str_port_list: "{{ wan001_out_udp_ports|default([])|join(' ') }}"
+    }
+    - {
       port_list_name: "{{ LAN001_OUT_FWR_TCP_PORTSET }}",
       ipset_create_options: "{{ LAN001_OUT_FWR_TCP_PORTSET }} bitmap:port range 0-1024",
       str_port_list: "{{ lan001_out_fwr_tcp_ports|default([])|join(' ') }}"

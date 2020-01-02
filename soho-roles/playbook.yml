@@ -1,7 +1,7 @@
 ---
-- hosts: dhcp.lan001.local
+- hosts: test-centos07.lan001.local
   roles:
-    - { role: 'basic', tags: 'basic' }
+    - { role: 'basic', tags: 'basic-centos07' }
 
 - hosts: fw.srvfarm001.local
   roles:

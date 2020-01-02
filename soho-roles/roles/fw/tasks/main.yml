@@ -25,6 +25,8 @@
 - name: Setup FW (basic setup, add LAN-001)
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh \ 
 --wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} \
+wan_out_tcp_ports="{{ WAN001_OUT_TCP_PORTSET }}" \
+wan_out_udp_ports="{{ WAN001_OUT_UDP_PORTSET }}" \
 trusted="{{ WAN001_TRUSTED_IN_FW_IPSET }}" \
 wan_in_tcp_ports="{{ WAN001_IN_FW_TCP_PORTSET }}" \
 wan_in_udp_ports="{{ WAN001_IN_FW_UDP_PORTSET }}" \

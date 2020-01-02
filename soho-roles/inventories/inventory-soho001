@@ -20,17 +20,22 @@
 [dhcp002.srvfarm001.local]
 172.17.0.138 # dhcp
 
+[test-centos07.lan001.local]
+172.17.0.31
+
 [basic:children]
 fw.lan001.local
 fw.srvfarm001.local
 ns001.srvfarm001.local
 ns002.srvfarm001.local
 dhcp001.srvfarm001.local
+test-centos07.lan001.local
 
 [CentOS:children]
 ns001.srvfarm001.local
 ns002.srvfarm001.local
 dhcp001.srvfarm001.local
+test-centos07.lan001.local
 
 [Debian:children]
 fw.srvfarm001.local
@@ -41,6 +46,7 @@ ns001.srvfarm001.local
 ns002.srvfarm001.local
 dhcp001.srvfarm001.local
 dhcp002.srvfarm001.local
+test-centos07.lan001.local
 
 [soho001:vars]
 ansible_ssh_user=vagrant

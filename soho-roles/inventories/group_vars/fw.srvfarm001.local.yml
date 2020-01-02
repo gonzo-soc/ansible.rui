@@ -4,6 +4,16 @@ wan_i: "eth0"
 wan_sn: "10.0.0.0/24"
 wan_ip: "nd"
 
+WAN001_OUT_TCP_PORTSET: "WAN001_OUT_TCP_PORTSET"
+wan001_out_tcp_ports:
+  - 80
+  - 443
+
+WAN001_OUT_UDP_PORTSET: "WAN001_OUT_UDP_PORTSET"
+wan001_out_udp_ports:
+  - 123
+  - 53
+
 WAN001_TRUSTED_IN_FW_IPSET: "WAN001_TRUSTED_IN_FW_IPSET"
 wan001_trusted:
   - "10.0.2.2"
