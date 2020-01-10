@@ -1,0 +1,44 @@
+ansible-playbook 2.8.2
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/home/likhobabin_im/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 2.7.5 (default, Apr  9 2019, 14:30:50) [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)]
+Using /etc/ansible/ansible.cfg as config file
+host_list declined parsing /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/inventories/inventory-soho001 as it did not pass it's verify_file() method
+script declined parsing /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/inventories/inventory-soho001 as it did not pass it's verify_file() method
+auto declined parsing /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/inventories/inventory-soho001 as it did not pass it's verify_file() method
+Parsed /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/inventories/inventory-soho001 inventory source with ini plugin
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/centos007/setup_def_pkgs.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/centos007/setup_locale.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/debian/setup_def_pkgs.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/debian/setup_locale.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/basic.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/setup_logging.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/centos007/setup_def_pkgs.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/centos007/setup_locale.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/debian/setup_def_pkgs.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/debian/setup_locale.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/basic.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/basic/tasks/setup_logging.yml
+statically imported: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/roles/fw/tasks/setup_ipset.yml
+
+PLAYBOOK: playbook.yml **************************************************************************************************************************************************************
+2 plays in playbook.yml
+
+PLAY [test-centos07.lan001.local] ***************************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************************************
+task path: /mnt/data/Workspace/projects/ansible/ansible.git/ansible.rui/soho-roles/playbook.yml:2
+<172.17.0.31> ESTABLISH SSH CONNECTION FOR USER: vagrant
+<172.17.0.31> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/likhobabin_im/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="vagrant"' -o ConnectTimeout=10 -o ControlPath=/home/likhobabin_im/.ansible/cp/ddaf5fffbc 172.17.0.31 '/bin/sh -c '"'"'echo ~vagrant && sleep 0'"'"''
+<172.17.0.31> (255, '', 'ssh: connect to host 172.17.0.31 port 22: Connection timed out\r\n')
+fatal: [172.17.0.31]: UNREACHABLE! => {
+    "changed": false, 
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host 172.17.0.31 port 22: Connection timed out", 
+    "unreachable": true
+}
+
+PLAY RECAP **************************************************************************************************************************************************************************
+172.17.0.31                : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+

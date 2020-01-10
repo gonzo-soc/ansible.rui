@@ -10,9 +10,9 @@
 - name: Prepare fw
   shell:
     cmd: | 
-      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/apply_iptables_patch.sh;
-      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --reset;
-      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lm;
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/apply_iptables_patch.sh;
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh --reset;
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh --lm;
   args:
     executable: /bin/bash
   tags:
@@ -23,7 +23,7 @@
     - include: "setup_ipset.yml"
  
 - name: Setup FW (basic setup, add LAN-001)
-  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh \ 
+  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh \ 
 --wan int={{ wan_i }} sn={{ wan_sn }} ip={{ wan_ip }} \
 wan_out_tcp_ports="{{ WAN001_OUT_TCP_PORTSET }}" \
 wan_out_udp_ports="{{ WAN001_OUT_UDP_PORTSET }}" \
@@ -43,7 +43,7 @@ in_udp_fw_ports="{{ LAN001_IN_FW_UDP_PORTSET }}"'
   debug: var=basicSetupOutput_Reg
 
 - name: Add LAN002
-  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/utils/firewall.sh --lan int={{ lan002_i }} sn={{ lan002_sn }} \
+  shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh --lan int={{ lan002_i }} sn={{ lan002_sn }} \
 ip={{ lan002_ip }} \
 out_tcp_fwr_ports={{ LAN002_OUT_FWR_TCP_PORTSET }} out_udp_fwr_ports={{ LAN002_OUT_FWR_UDP_PORTSET }} \
 wan_int={{ wan_i }} \

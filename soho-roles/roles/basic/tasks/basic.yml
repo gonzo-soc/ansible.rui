@@ -92,11 +92,14 @@
     mode: '0775'
 
 - name: Update RUI
-  shell: 'rm -Rf rollUpIt.lnx 2>/dev/null;
-          wget -r -nv -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx;
-          chown -Rf root:develop {{ rollUpIt_lnx_dst }}/rollUpIt.lnx;
-          find {{ rollUpIt_lnx_dst }}/rollUpIt.lnx -iname "*.sh" -exec chmod 775 {} \;'
+  shell:
+    cmd: |
+        rm -Rf ./rollUpIt.lnx
+        wget -r -l 100 -nv -nH --cut-dir 1 ftp://ftp_user:SUPER@172.17.0.132/pub/rollUpIt.lnx
+        chown -Rf root:develop {{ rollUpIt_lnx_dst }}/rollUpIt.lnx
+        find {{ rollUpIt_lnx_dst }}/rollUpIt.lnx -iname "*.sh" -exec chmod 775 '{}' \;
   args:
+    executable: /bin/bash
     chdir: "{{ rollUpIt_lnx_dst }}"
   tags: update-rui 
 
