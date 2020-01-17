@@ -21,11 +21,11 @@
          printf "debug [Prepare LAN001 ipset] ipset [{{ item.ipset_name }}] has already been defined. Please, check [ ipset list -n ]\n"
        fi
   loop:
-    - {
-      ipset_name: "{{ WAN001_TRUSTED_IN_FW_IPSET }}",
-      ipset_create_options: "{{ WAN001_TRUSTED_IN_FW_IPSET }} hash:ip netmask 24",
-      str_ip_list: "{{ wan001_trusted|join(' ') }}",
-    }
+    #    - {
+    #      ipset_name: "{{ WAN001_TRUSTED_IN_FW_IPSET }}",
+    #      ipset_create_options: "{{ WAN001_TRUSTED_IN_FW_IPSET }} hash:ip netmask 24",
+    #      str_ip_list: "{{ wan001_trusted|join(' ') }}",
+    #    }
     - {
       ipset_name: "{{ LAN001_TRUSTED_IN_FW_IPSET }}",
       ipset_create_options: "{{ LAN001_TRUSTED_IN_FW_IPSET }} hash:ip",
@@ -59,7 +59,7 @@
   loop:
     - {
       port_list_name: "{{ WAN001_IN_FW_TCP_PORTSET }}",
-      ipset_create_options: "{{ WAN001_IN_FW_TCP_PORTSET }} bitmap:port range 0-1024",
+      ipset_create_options: "{{ WAN001_IN_FW_TCP_PORTSET }} bitmap:port range 0-4000",
       str_port_list: "{{ wan001_in_tcp_ports|default([])|join(' ') }}"
     }
     - {
@@ -69,7 +69,7 @@
     }
     - {
       port_list_name: "{{ WAN001_OUT_TCP_PORTSET }}",
-      ipset_create_options: "{{ WAN001_OUT_TCP_PORTSET }} bitmap:port range 0-1024",
+      ipset_create_options: "{{ WAN001_OUT_TCP_PORTSET }} bitmap:port range 0-4000",
       str_port_list: "{{ wan001_out_tcp_ports|default([])|join(' ') }}"
     }
     - {
@@ -79,12 +79,12 @@
     }
     - {
       port_list_name: "{{ LAN001_OUT_FWR_TCP_PORTSET }}",
-      ipset_create_options: "{{ LAN001_OUT_FWR_TCP_PORTSET }} bitmap:port range 0-1024",
+      ipset_create_options: "{{ LAN001_OUT_FWR_TCP_PORTSET }} bitmap:port range 0-4000",
       str_port_list: "{{ lan001_out_fwr_tcp_ports|default([])|join(' ') }}"
     }
     - {
       port_list_name: "{{ LAN001_OUT_FWR_UDP_PORTSET }}",
-      ipset_create_options: "{{ LAN001_OUT_FWR_UDP_PORTSET }} bitmap:port range 0-1024",
+      ipset_create_options: "{{ LAN001_OUT_FWR_UDP_PORTSET }} bitmap:port range 0-4000",
       str_port_list: "{{ lan001_out_fwr_udp_ports|default([])|join(' ') }}"
     }
     - {

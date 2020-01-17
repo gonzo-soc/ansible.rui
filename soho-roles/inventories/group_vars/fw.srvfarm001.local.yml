@@ -6,69 +6,76 @@ wan_ip: "nd"
 
 WAN001_OUT_TCP_PORTSET: "WAN001_OUT_TCP_PORTSET"
 wan001_out_tcp_ports:
-  - 80
-  - 443
-  - 22
+  - "80"
+  - "443"
+  - "22"
 
 WAN001_OUT_UDP_PORTSET: "WAN001_OUT_UDP_PORTSET"
 wan001_out_udp_ports:
-  - 123
-  - 53
-  - 67
+  - "123"
+  - "53"
+  - "67"
 
-# WAN001_TRUSTED_IN_FW_IPSET: "WAN001_TRUSTED_IN_FW_IPSET"
 WAN001_TRUSTED_IN_FW_IPSET: "nd"
-wan001_trusted:
-  - "10.0.2.2"
 
 WAN001_IN_FW_TCP_PORTSET: "WAN001_IN_FW_TCP_PORTSET"
 wan001_in_tcp_ports:
   - "22"
+  - "2020"
 
 WAN001_IN_FW_UDP_PORTSET: "nd"
 
 
 lan001_i: "eth1"
 lan001_sn: "172.17.0.128/25"
-lan001_ip: 172.17.0.134
+lan001_ip: "172.17.0.134"
 
 LAN001_TRUSTED_IN_FW_IPSET: "LAN001_TRUSTED_IN_FW_IPSET"
 lan001_trusted:
-  - 172.17.0.130
-  - 172.17.0.132
-  - 172.17.0.133
+  - "172.17.0.130"
+  - "172.17.0.132"
+  - "172.17.0.133"
 
 LAN001_IN_FW_TCP_PORTSET: "LAN001_IN_FW_TCP_PORTSET"
 lan001_in_fw_tcp_ports:
-  - 22
+  - "22"
 
 LAN001_IN_FW_UDP_PORTSET: "nd"
 
 LAN001_OUT_FWR_TCP_PORTSET: "LAN001_OUT_FWR_TCP_PORTSET"
 lan001_out_fwr_tcp_ports:
-  - 80
-  - 443
+  - "80"
+  - "443"
+  - "2023"
+  - "2022"
 
-LAN001_OUT_FWR_UDP_PORTSET: "nd"
+LAN001_OUT_FWR_UDP_PORTSET: "LAN001_OUT_FWR_UDP_PORTSET"
+lan001_out_fwr_udp_ports:
+  - "123"
 
-
-lan002_i: eth2
-lan002_sn: 172.17.0.0/25
-lan002_ip: 172.17.0.3
+lan002_i: "eth2"
+lan002_sn: "172.17.0.0/25"
+lan002_ip: "172.17.0.3"
 
 LAN002_TRUSTED_IN_FW_IPSET: "LAN002_TRUSTED_IN_FW_IPSET"
 lan002_trusted:
-  - 172.17.0.31
+  - "172.17.0.31"
 
 LAN002_IN_FW_TCP_PORTSET: "LAN002_IN_FW_TCP_PORTSET"
 lan002_in_fw_tcp_ports:
-  - 22
+  - "22"
 
 LAN002_IN_FW_UDP_PORTSET: "nd"
 
 LAN002_OUT_FWR_TCP_PORTSET: "LAN002_OUT_FWR_TCP_PORTSET"
 lan002_out_fwr_tcp_ports:
-  - 80
-  - 443
+  - "80"
+  - "443"
 
-LAN002_OUT_FWR_UDP_PORTSET: "nd"
+LAN002_OUT_FWR_UDP_PORTSET: "LAN002_OUT_FWR_TCP_PORTSET"
+lan002_out_fwr_udp_ports:
+  - "123"
+ 
+LAN001_PF_FROM_PORT: "2022"
+LAN001_PF_TO_IP: "172.17.0.132"
+LAN001_PF_TO_PORT: "2022"

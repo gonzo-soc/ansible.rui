@@ -1,5 +1,4 @@
 ---
-# tasks file for fw
 
 - name: Install iptables
   apt: name={{ item }} state=present
@@ -29,7 +28,8 @@ wan_out_tcp_ports="{{ WAN001_OUT_TCP_PORTSET }}" \
 wan_out_udp_ports="{{ WAN001_OUT_UDP_PORTSET }}" \
 trusted="{{ WAN001_TRUSTED_IN_FW_IPSET }}" \
 wan_in_tcp_ports="{{ WAN001_IN_FW_TCP_PORTSET }}" \
-wan_in_udp_ports="{{ WAN001_IN_FW_UDP_PORTSET }}" \
+wan_in_udp_ports="{{ WAN001_IN_FW_UDP_PORTSET }}" \                                                 
+synproxy \
 --lan int={{ lan001_i }} sn={{ lan001_sn }} ip={{ lan001_ip }} \
 out_tcp_fwr_ports={{ LAN001_OUT_FWR_TCP_PORTSET }} out_udp_fwr_ports={{ LAN001_OUT_FWR_UDP_PORTSET }} \
 trusted="{{ LAN001_TRUSTED_IN_FW_IPSET }}" \
@@ -39,8 +39,15 @@ in_udp_fw_ports="{{ LAN001_IN_FW_UDP_PORTSET }}"'
   tags:
     - setup-fw
 
-- name: Debug Setup FW 
-  debug: var=basicSetupOutput_Reg
+- name: Port forward to LAN001
+  shell:  
+    cmd: |
+      {{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh --pf wan_iface={{ wan_i }} \
+      from_port={{ LAN001_PF_FROM_PORT }} to_ip={{ LAN001_PF_TO_IP }} to_port={{ LAN001_PF_TO_PORT }}
+  args:
+    executable: /bin/bash
+  tags:
+    - pf-fw
 
 - name: Add LAN002
   shell: '{{ rollUpIt_lnx_dst }}/rollUpIt.lnx/libs/lnx_debian09/iptables/utils/firewall.sh --lan int={{ lan002_i }} sn={{ lan002_sn }} \
