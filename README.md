@@ -1,2 +1,2 @@
 # ansible.rui
-Plots for linux deployment within ansible
+Deploy this, that and the other
